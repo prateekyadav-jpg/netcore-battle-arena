@@ -278,9 +278,12 @@ export default function App() {
   const myCorrect      = completed.filter(m => myPreds[m.id] === results[m.id]).length;
   const predCount      = Object.keys(myPreds).length;
 
-  const NAV = me.isAdmin
-    ? [{ id: 'predict', icon: 'ti-target', label: 'Predict' }, { id: 'results', icon: 'ti-checklist', label: 'Results' }, { id: 'leaderboard', icon: 'ti-trophy', label: 'Board' }, { id: 'admin', icon: 'ti-settings', label: 'Admin' }]
-    : [{ id: 'predict', icon: 'ti-target', label: 'Predict' }, { id: 'results', icon: 'ti-checklist', label: 'Results' }, { id: 'leaderboard', icon: 'ti-trophy', label: 'Board' }];
+  const NAV = [
+    { id: 'predict', icon: 'ti-target', label: 'Predict' },
+    { id: 'results', icon: 'ti-checklist', label: 'Results' },
+    { id: 'leaderboard', icon: 'ti-trophy', label: 'Board' },
+    { id: 'admin', icon: 'ti-settings', label: 'Admin' },
+  ];
 
   return (
     <div style={{ minHeight: '100vh', background: '#F0F2FF', paddingBottom: 80 }}>
@@ -581,24 +584,34 @@ function MatchCard({ match: m, picked, onPick, locked }) {
         <span style={{ fontSize: 11, color: 'rgba(0,0,0,0.12)' }}>· {m.time}</span>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 40px 1fr', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-        {['p1','p2'].map((side, i) => {
-          const player = side === 'p1' ? m.p1 : m.p2;
-          const av = avatarColor(player.name);
-          const sel = picked === side;
-          return (
-            <div key={side} onClick={() => !locked && onPick(m.id, side)}
-              style={{ padding: '10px 10px', borderRadius: 10, border: `1.5px solid ${sel ? '#7C6EE8' : 'rgba(0,0,0,0.06)'}`, background: sel ? 'rgba(124,110,232,0.12)' : 'rgba(255,255,255,0.025)', cursor: locked ? 'default' : 'pointer', transition: 'all 0.15s', textAlign: i===1 ? 'right' : 'left' }}>
-              <div style={{ display: 'flex', flexDirection: i===1?'row-reverse':'row', alignItems: 'center', gap: 8 }}>
-                <div style={{ width: 34, height: 34, borderRadius: '50%', background: av.bg, color: av.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{initials(player.name)}</div>
-                <div style={{ textAlign: i===1?'right':'left', minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: sel ? '#534AB7' : '#1A1A2E', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{player.name}</div>
-                  <div style={{ fontSize: 11, color: 'rgba(0,0,0,0.3)', marginTop: 1 }}>{player.dept}</div>
-                </div>
+        {/* Player 1 */}
+        {(() => { const player = m.p1; const av = avatarColor(player.name); const sel = picked === 'p1'; return (
+          <div onClick={() => !locked && onPick(m.id, 'p1')}
+            style={{ padding: '10px 10px', borderRadius: 10, border: `1.5px solid ${sel ? '#7C6EE8' : 'rgba(0,0,0,0.06)'}`, background: sel ? 'rgba(124,110,232,0.12)' : 'rgba(0,0,0,0.01)', cursor: locked ? 'default' : 'pointer', transition: 'all 0.15s' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 34, height: 34, borderRadius: '50%', background: av.bg, color: av.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{initials(player.name)}</div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: sel ? '#534AB7' : '#1A1A2E', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{player.name}</div>
+                <div style={{ fontSize: 11, color: 'rgba(0,0,0,0.35)', marginTop: 1 }}>{player.dept}</div>
               </div>
             </div>
-          );
-        })}
-        <div style={{ textAlign: 'center', fontSize: 12, color: 'rgba(0,0,0,0.4)', fontWeight: 700, textAlign: 'center' }}>VS</div>
+          </div>
+        ); })()}
+        {/* VS */}
+        <div style={{ textAlign: 'center', fontSize: 12, color: 'rgba(0,0,0,0.35)', fontWeight: 700 }}>VS</div>
+        {/* Player 2 */}
+        {(() => { const player = m.p2; const av = avatarColor(player.name); const sel = picked === 'p2'; return (
+          <div onClick={() => !locked && onPick(m.id, 'p2')}
+            style={{ padding: '10px 10px', borderRadius: 10, border: `1.5px solid ${sel ? '#7C6EE8' : 'rgba(0,0,0,0.06)'}`, background: sel ? 'rgba(124,110,232,0.12)' : 'rgba(0,0,0,0.01)', cursor: locked ? 'default' : 'pointer', transition: 'all 0.15s' }}>
+            <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 34, height: 34, borderRadius: '50%', background: av.bg, color: av.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{initials(player.name)}</div>
+              <div style={{ textAlign: 'right', minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: sel ? '#534AB7' : '#1A1A2E', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{player.name}</div>
+                <div style={{ fontSize: 11, color: 'rgba(0,0,0,0.35)', marginTop: 1 }}>{player.dept}</div>
+              </div>
+            </div>
+          </div>
+        ); })()}
       </div>
       <div style={{ fontSize: 12, textAlign: 'center', color: picked ? '#A89DF0' : 'rgba(0,0,0,0.2)' }}>
         {picked ? `✓ Picked: ${picked === 'p1' ? m.p1.name : m.p2.name}` : 'Tap a player to pick the winner'}
