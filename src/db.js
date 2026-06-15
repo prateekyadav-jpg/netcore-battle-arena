@@ -2,7 +2,7 @@
 // Replace BIN_ID and API_KEY with your own from jsonbin.io (free account)
 // Or swap this module for Firebase/Supabase — the interface stays the same.
 
-const API_KEY  = '$2a$10$$2a$10$aG2eoSY1kpEQA5OPbE93DOkxy8pDzO/2xjNoGqOMUonDs3SgUCHwC';
+const API_KEY  = '$2a$10$aG2eoSY1kpEQA5OPbE93DOkxy8pDzO/2xjNoGqOMUonDs3SgUCHwC';
 const BIN_ID   = '6a2fb0c9f5f4af5e29f3bafd';
 const BASE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
